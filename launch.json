@@ -1,0 +1,22 @@
+{
+  "kind": "evm_project",
+  "token": {
+    "contract": "LaunchToken",
+    "name": "KeyValueRegistry Launch Token",
+    "symbol": "KVR",
+    "decimals": 18
+  },
+  "contracts": [
+    {
+      "contract": "KeyValueRegistry",
+      "constructorArgs": []
+    }
+  ],
+  "pool": {
+    "pairedCurrency": "0x0000000000000000000000000000000000000000",
+    "fee": 3000,
+    "tickSpacing": 60,
+    "initialPrice": "79228162514264337593543950336"
+  },
+  "notes": "Application contract: KeyValueRegistry (src/KeyValueRegistry.sol), a bytes32->bytes32 registry with per-caller namespaces keyed by msg.sender. Constructor takes no parameters and receives no ETH; MAX_BATCH = 16 is a compile-time constant. There is no owner, admin, pause, upgrade, fallback or receive function, no external calls and no token transfers, so no $owner, $token or $contract reference applies and no initialization call is needed. Two batch APIs: batchAtomic reverts the whole batch on the first invalid operation (refusal order InvalidKind, ZeroKey, ZeroValue, KeyExists/KeyMissing); batchBestEffort applies valid operations sequentially, skips invalid ones and returns a per-item Status array while emitting OperationSkipped. Batches hold 1..16 operations. Keys and stored values are nonzero bytes32; value zero means absent. Target chain: Sepolia (11155111); script/Deploy.s.sol refuses every other chain id including mainnet. Compiler: solc 0.8.26 (source is written at the 0.8.24 language level; the offline verifier carries no 0.8.24 binary and the protected floor tests pin 0.8.26), optimizer on, 200 runs, evm paris, bytecode_hash none. ABI export at docs/abi/KeyValueRegistry.json; deployment record template at docs/deployment.md, to be filled by the network deployer with the address, transaction hash and explorer link.\n\nBLOCKING GAP, NOT RESOLVABLE IN THIS ASSIGNMENT: the accepted tree contains no launch token. The task brief said 'do not create a token', the builder honoured it (README 'No token', REVIEW finding 4), and this manifest assignment may change only launch.json. The evm_project schema nevertheless requires a token block, so the block above names 'LaunchToken' as a placeholder identifier only: no contract of that name exists in src/, and the 18 decimals and symbol are the intended values for a token that has not been written. Attestation, Token.protected.t.sol and Project.protected.t.sol will fail on the missing token creation code until one of the following happens: (a) a builder assignment adds a fixed-supply ERC-20 named LaunchToken (no constructor arguments, 18 decimals, exactly 10^27 minor units minted to msg.sender, no mint/admin path, no DELEGATECALL/SELFDESTRUCT) and this manifest is re-checked against it, or (b) the launch is admitted as a plain contract deployment through script/Deploy.s.sol with EXPECTED_CHAIN_ID=11155111, which is what the accepted README documents. The pool block uses the standard Sepolia values (native ETH pairing, fee 3000, tickSpacing 60, sqrtPriceX96 for a 1:1 opening price); the deployer derives the effective opening price from the pinned policy. The manifest describes only what is in the accepted tree plus this explicitly flagged placeholder; it does not name any privileged wallet, supply or allocation."
+}
